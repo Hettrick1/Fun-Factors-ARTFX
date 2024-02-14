@@ -9,6 +9,7 @@ public class GrenadeScript : MonoBehaviour
     [SerializeField] private int grenadeAmount;
 
     [SerializeField] private Transform[] grenadePosition;
+    [SerializeField] private GameObject[] muzzleFlash;
     [SerializeField] private GameObject grenade;
     [SerializeField] private float grenadeDelay;
 
@@ -34,6 +35,9 @@ public class GrenadeScript : MonoBehaviour
             {
                 grenadeAmount--;
                 GameObject lastGrenade = Instantiate(grenade, grenadePosition[i].position + transform.forward, grenadePosition[i].rotation);
+                muzzleFlash[i].SetActive(true);
+                Invoke(nameof(SetFlash), 0.05f);
+                grenadePosition[i].GetChild(0).GetComponent<ParticleSystem>().Play();
                 if (FirstPersonCamera.instance.AimCenter().distance == 0)
                 {
                     lastGrenade.GetComponent<Rigidbody>().AddForce(((transform.forward * throwGrenadeForce) + (transform.up * throwGrenadeForce * 0.3f)), ForceMode.Impulse);
@@ -48,9 +52,12 @@ public class GrenadeScript : MonoBehaviour
         }
     }
 
-    private void ShootGrenade()
+    private void SetFlash()
     {
-
+        foreach (GameObject flash in muzzleFlash)
+        {
+            flash.SetActive(false);
+        }
     }
 
     public void AddGrenade(int nbrGrenade)

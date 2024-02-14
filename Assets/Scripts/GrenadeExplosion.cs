@@ -23,7 +23,8 @@ public class GrenadeExplosion : MonoBehaviour
             GameObject obj = collider.gameObject;
             if (obj.CompareTag("Target"))
             {
-                obj.GetComponent<Rigidbody>().AddExplosionForce(1500, transform.position, sphereRadius);
+                obj.GetComponent<Rigidbody>().AddExplosionForce(400, transform.position, sphereRadius);
+                obj.GetComponent<TargetScript>().Burn();
             }
            
         }
@@ -35,5 +36,13 @@ public class GrenadeExplosion : MonoBehaviour
     {
         Destroy(fxExplosion.gameObject);
         Destroy(gameObject);
+    }
+
+    private void OnCollisionEnter(Collision collision)
+    {
+        if (collision != null && collision.gameObject.CompareTag("Target"))
+        {
+            Explosion();
+        }
     }
 }
