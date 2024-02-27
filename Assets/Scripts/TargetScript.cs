@@ -10,8 +10,10 @@ public class TargetScript : MonoBehaviour
     [SerializeField] private float life;
     [SerializeField] private GameObject explosionEffect;
     [SerializeField] private float sphereRadius;
+    [SerializeField] private float scoreEarned;
 
     bool isBurning;
+    bool isDeactivated;
     private void Update()
     {
         if (isBurning)
@@ -37,12 +39,19 @@ public class TargetScript : MonoBehaviour
             {
                 obj.GetComponent<Rigidbody>().AddExplosionForce(100, transform.position, sphereRadius);
                 obj.GetComponent<TargetScript>().Burn();
+                ScorePopUpSpawner.instance.SpawnPopup(obj.transform.position + new Vector3(0, 5, 0), scoreEarned.ToString(), false);
+                GameManager.instance.AddScore((int)scoreEarned);
             }
             Invoke(nameof(DestroyObjects), 1f);
         }
     }
     private void DestroyObjects()
     {
+        if (!isDeactivated)
+        {
+            isDeactivated = true;
+            GameManager.instance.SetNbreCar();
+        }
         Destroy(gameObject);
     }
 
@@ -60,14 +69,19 @@ public class TargetScript : MonoBehaviour
             if (Physics.Raycast(transform.position, Vector3.down, out hit, Mathf.Infinity,~gameObject.layer))
             {
                 Vector3 firePosition = hit.point - new Vector3(0, 0.3f, 0);
-                print(hit.transform.position);
                 Instantiate(flameEffects, firePosition, Quaternion.Euler(-90,0,0));
             }
-            if (collision.gameObject.tag == "Target")
+            if (collision.gameObject.tag == "Target" && !collision.gameObject.GetComponent<TargetScript>().GetIsBurning())
             {
                 collision.gameObject.GetComponent<TargetScript>().Burn();
+                ScorePopUpSpawner.instance.SpawnPopup(collision.transform.position + new Vector3(0, 5, 0), (10*scoreEarned).ToString(), true);
+                GameManager.instance.AddScore((int)(10*scoreEarned));
             }
             
         }
+    }
+    public bool GetIsBurning()
+    {
+        return isBurning;
     }
 }

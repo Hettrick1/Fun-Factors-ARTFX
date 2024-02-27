@@ -19820,9 +19820,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   flames: {fileID: 483751695884653074}
   flameEffects: {fileID: 8914198997139235951, guid: 0efa39aee716d0647933f7ec24c938ab, type: 3}
-  life: 5
+  life: 2
   explosionEffect: {fileID: 1545598702286496258, guid: f0130ccdfb777f0438dddbfb7eb7211c, type: 3}
-  sphereRadius: 7
+  sphereRadius: 40
+  scoreEarned: 10
 --- !u!1 &6648837440589113595
 GameObject:
   m_ObjectHideFlags: 0

@@ -149,6 +149,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   explosionEffect: {fileID: 1545598702286496258, guid: f0130ccdfb777f0438dddbfb7eb7211c, type: 3}
   sphereRadius: 5
+  scoreEarned: 150
 --- !u!1 &8110951515908555939
 GameObject:
   m_ObjectHideFlags: 0
