@@ -11,13 +11,22 @@ public class TargetScript : MonoBehaviour
     [SerializeField] private GameObject explosionEffect;
     [SerializeField] private float sphereRadius;
     [SerializeField] private float scoreEarned;
+    [SerializeField] private AudioSource targetSource;
+    [SerializeField] private AudioSource targetSource2;
 
     bool isBurning;
     bool isDeactivated;
+    bool isPlaying;
+    bool isPlaying2;
     private void Update()
     {
         if (isBurning)
         {
+            if (!isPlaying2){
+                isPlaying2 = true;
+                targetSource2.Play();
+            }
+
             life -= Time.deltaTime;
             if (life <= 0)
             {
@@ -29,6 +38,11 @@ public class TargetScript : MonoBehaviour
     public void Explosion()
     {
         Instantiate(explosionEffect, transform.position, transform.rotation);
+        if (!isPlaying)
+        {
+            isPlaying = true;
+            targetSource.Play();
+        }
         CameraShake.instance.StartCameraShake(0.7f, 0.8f);
         Collider[] colliders = Physics.OverlapSphere(transform.position, sphereRadius);
 

@@ -12,6 +12,7 @@ public class GrenadeScript : MonoBehaviour
     [SerializeField] private GameObject[] muzzleFlash;
     [SerializeField] private GameObject grenade;
     [SerializeField] private float grenadeDelay;
+    [SerializeField] private AudioSource grenadeAudioSource;
 
     bool canShoot;
     private Transform targetTransform;
@@ -29,6 +30,7 @@ public class GrenadeScript : MonoBehaviour
     {
         if (context.performed && grenadeAmount > 0)
         {
+            grenadeAudioSource.Play();
             GetComponent<Animator>().SetTrigger("Shoot");
             CameraShake.instance.StartCameraShake(0.15f, 0.2f);
             for (int i=0; i<grenadePosition.Length; i++)

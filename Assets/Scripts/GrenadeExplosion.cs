@@ -9,6 +9,8 @@ public class GrenadeExplosion : MonoBehaviour
     private GameObject fxExplosion;
     [SerializeField] private float sphereRadius;
     [SerializeField] private float scoreEarned;
+
+    [SerializeField] private AudioSource explosionSource;
     public void InvokeExplosion(float delay)
     {
         Invoke(nameof(Explosion), delay);
@@ -16,6 +18,7 @@ public class GrenadeExplosion : MonoBehaviour
     public void Explosion()
     { 
         fxExplosion = Instantiate(explosionEffect, transform.position, transform.rotation);
+        explosionSource.Play();
         CameraShake.instance.StartCameraShake(0.7f, 0.8f);
         Collider[] colliders = Physics.OverlapSphere(transform.position, sphereRadius);
 
