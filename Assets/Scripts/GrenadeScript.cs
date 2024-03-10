@@ -15,6 +15,7 @@ public class GrenadeScript : MonoBehaviour
     [SerializeField] private AudioSource grenadeAudioSource;
 
     bool canShoot;
+    float shootRegen = 1f;
     private Transform targetTransform;
     [SerializeField] private Transform weaponTransform;
 
@@ -26,10 +27,21 @@ public class GrenadeScript : MonoBehaviour
         targetTransform = weaponTransform;
     }
 
+    private void Update()
+    {
+        shootRegen += Time.deltaTime;
+        if(shootRegen > 1f) 
+        { 
+            canShoot = true;
+            shootRegen = 0;
+        }
+    }
+
     public void ShootGrenade(InputAction.CallbackContext context)
     {
-        if (context.performed && grenadeAmount > 0)
+        if (context.performed && grenadeAmount > 0 && canShoot)
         {
+            canShoot = false;
             grenadeAudioSource.Play();
             GetComponent<Animator>().SetTrigger("Shoot");
             CameraShake.instance.StartCameraShake(0.15f, 0.2f);
